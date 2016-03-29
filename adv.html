@@ -1,0 +1,133 @@
+<html>
+<head>
+ <title>Poloniex XMRBTC</title>
+<script src="http://www.highcharts.com/lib/jquery-1.7.2.js" charset="utf-8"></script>
+<script type="text/javascript">
+(function($){ // encapsulate jQuery
+$(function () {
+
+  theme = 'dark-unica';
+
+
+    var adv_options = {
+
+      rangeSelector : {
+           selected : 1,
+           enabled: false
+       },
+
+        title: {
+          text : 'POLONIEX XMRBTC 15min (900s)'
+        },
+        indicators: [
+
+          {
+            id: 'XMRBTC',
+            type: 'sma',
+            params: {
+                period: 50
+            },
+            styles: {
+                stroke: 'black',
+                dashstyle: 'solid'
+            }
+        }, {
+            id: 'XMRBTC',
+            type: 'ema',
+            params: {
+                period: 30,
+                index: 0 //optional parameter for ohlc / candlestick / arearange - index of value
+            },
+            styles: {
+                strokeWidth: 1,
+                stroke: 'grey',
+                dashstyle: 'solid'
+            }
+        }, {
+            id: 'XMRBTC',
+            type: 'atr',
+            params: {
+                period: 14
+            },
+            styles: {
+                strokeWidth: 2,
+                stroke: 'white',
+                dashstyle: 'solid'
+            },
+            yAxis: {
+                lineWidth: 2,
+                title: {
+                    text: 'ATR'
+                }
+            }
+        }, {
+            id: 'XMRBTC',
+            type: 'rsi',
+            params: {
+                period: 5,
+                overbought: 70,
+                oversold: 30
+            },
+            styles: {
+                strokeWidth: 1,
+                stroke: 'black',
+                dashstyle: 'solid'
+            },
+            yAxis: {
+                lineWidth: 1,
+                title: {
+                    text: 'RSI'
+                }
+            }
+        }],
+        yAxis: {
+            opposite: false,
+            title: {
+                text: 'DATA',
+                x: -4
+            },
+            lineWidth: 2,
+            labels: {
+                x: 22
+            }
+        },
+
+        tooltip: {
+            enabledIndicators: true
+        },
+        series: [{
+            cropThreshold: 0,
+            id: 'XMRBTC',
+            name: 'XMRBTC',
+            data: [],
+            tooltip: {
+                valueDecimals: 8
+            }
+        }]
+    };
+
+    $.getJSON('https://raw.githubusercontent.com/mthjn/rubycharts/master/polo2.json', function (data) {
+        adv_options.series[0].type = 'candlestick';
+        adv_options.series[0].data = data;
+        $('#container-advanced').highcharts('StockChart', adv_options);
+    });
+});
+})(jQuery);
+
+ </script>
+
+</head>
+<body>
+
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="http://code.highcharts.com/themes/dark-unica.js"></script>
+
+<script src="indicators/js/indicators.js"></script>
+<script src="indicators/js/sma.js"></script>
+<script src="indicators/js/ema.js"></script>
+<script src="indicators/js/rsi.js"></script>
+<script src="indicators/js/atr.js"></script>
+
+<div id="container-advanced" class="chart" style="height:600px"></div>
+</body>
+</html>

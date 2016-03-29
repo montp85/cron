@@ -1,0 +1,152 @@
+<html>
+<body>
+<div class="container">
+  <div class="row">
+
+   <div class="twelve columns">
+        <article class="mainchart">
+          <script charset="utf-8">
+window.onload = function () {
+    if (localStorage.justOnce!="true") {
+      localStorage.setItem("justOnce", "true");
+      window.location.reload();
+    }
+}
+window.setInterval(function () {
+        localStorage.setItem('justOnce', "false");
+},10000);
+
+jQuery.getJSON('https://thebitcoingame.xyz/data/ethdash.json', function(data) {
+  $(function() {
+        $('#macd').highcharts('StockChart', {
+
+            title : {
+                text : 'MACD of {{ page.pair }} price'
+            },
+
+            subtitle: {
+                text: 'Poloniex Data'
+            },
+
+            yAxis: [{
+                title: {
+                    text: 'Price'
+                },
+                height: 200,
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            }, {
+                title: {
+                    text: 'MACD'
+                },
+                top: 300,
+                height: 100,
+                offset: 0,
+                lineWidth: 2
+            }],
+
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+
+            rangeSelector : {
+                selected : 4,
+                buttons: [{
+                  type: 'hour',
+                  count: 1,
+                  text: '1h'
+                }, {
+                  type: 'hour',
+                  count: 3,
+                  text: '3h'
+                },{
+                  	type: 'day',
+                  	count: 1,
+                  	text: '24h'
+                  },  {
+                  	type: 'all',
+                  	text: 'WK'
+                  }]
+            },
+
+            legend: {
+                enabled: true,
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false,
+                    }
+                }
+            },
+
+            series : [{
+                name: '{{ page.pair }} Price',
+                type : 'line',
+                id: 'primary',
+                data : data
+            }, {
+                name : 'MACD',
+                linkedTo: 'primary',
+                yAxis: 1,
+                showInLegend: true,
+                type: 'trendline',
+                algorithm: 'MACD'
+
+            }, {
+                name : 'Signal line',
+                linkedTo: 'primary',
+                yAxis: 1,
+                showInLegend: true,
+                type: 'trendline',
+                algorithm: 'signalLine'
+
+            }, {
+                name: 'Histogram',
+                linkedTo: 'primary',
+                yAxis: 1,
+                showInLegend: true,
+                type: 'histogram'
+
+            }, {
+                name: '15-day SMA',
+                linkedTo: 'primary',
+                showInLegend: true,
+                type: 'trendline',
+                algorithm: 'SMA',
+                periods: 15
+            }, {
+                name: '40-day SMA',
+                linkedTo: 'primary',
+                showInLegend: true,
+                type: 'trendline',
+                algorithm: 'SMA',
+                periods: 40
+            }]
+        });
+    });
+});
+
+
+</script>
+
+           <script src="https://altcoinwisdom.com/assets/charts/highstock.js"></script>
+           <script src="https://altcoinwisdom.com/assets/charts/exporting.js"></script>
+           <script src="https://altcoinwisdom.com/assets/charts/dark-unica.js"></script>
+           <script src="https://altcoinwisdom.com/assets/charts/macd/technical-indicators.src.js"></script>
+           <div id="macd" style="height: 500px; min-width: 310px"></div>
+        </article>
+    </div>
+
+  </div>
+</body>
+</html>
